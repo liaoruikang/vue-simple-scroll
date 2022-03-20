@@ -1,4 +1,4 @@
-# vue-simple-scroll ![](https://img.shields.io/badge/version-1.0.2-blue.svg)
+# vue-simple-scroll ![](https://img.shields.io/badge/version-1.0.3-blue.svg)
 
 一款简洁的 vue 滚动插件，快速，高效。支持滚动条和内容自定义。
 
@@ -29,12 +29,12 @@ npm i vue-simple-scroll-plugin --save
 
 ```
 import Vue from 'vue'
-import simpleScroll from 'vue-simple-scroll'
+import simpleScroll from 'vue-simple-scroll-plugin'
 Vue.use(simpleScroll)
 ```
 
 ```
-import {SimpleScroll} from 'vue-simple-scroll'
+import {SimpleScroll} from 'vue-simple-scroll-plugin'
 ```
 
 ```
