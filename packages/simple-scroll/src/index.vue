@@ -7,14 +7,14 @@
         ? 'none'
         : 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     }"
-    @mouseenter="isShow = true"
+    @mousemove="isShow = true"
     @mouseleave="isShow = false"
   >
     <!-- 内容 -->
     <div class="simple__table" ref="tableRef" v-roll>
       <div class="simple__content" style="top: 0; left: 0" ref="contentRef">
         <slot>
-          <li class="simple__li" v-for="item in 35" :key="item">
+          <li class="simple__li" v-for="item in 15" :key="item">
             {{ item }}
           </li>
         </slot>
@@ -99,6 +99,10 @@ export default {
     hideShadow: {
       type: Boolean,
       default: false
+    },
+    // 内容区域数据
+    data: {
+      required: true
     }
   },
   data() {
@@ -136,22 +140,7 @@ export default {
     this.tableEl = this.$refs.tableRef
     this.contentEl = this.$refs.contentRef
     this.barEl = this.$refs.barRef
-    // 判断是否需要滚动条 以及动态修改滚动条高度
-    if (this.contentEl.offsetHeight <= this.tableEl.offsetHeight) {
-      this.isScroll = false
-      this.$refs.scrollRef.style.display = 'none'
-    } else {
-      let h = (this.tableEl.offsetHeight / this.contentEl.offsetHeight) * 300
-      h = h < 20 ? 20 : h
-      this.barEl.style.height = h + 'px'
-    }
-    // 滚动条最大移动距离
-    this.barMax = this.scrollEL.offsetHeight - this.barEl.offsetHeight
-    // 内容最大移动距离
-    this.cMax = this.contentEl.offsetHeight - this.tableEl.offsetHeight
-    // 滚动条与内容区域的缩放比例
-    this.cZoom =
-      this.cMax / (this.scrollEL.offsetHeight - this.barEl.offsetHeight)
+    this.judge()
     this.isShow = false
   },
   methods: {
@@ -161,7 +150,7 @@ export default {
       // 鼠标起使位置
       this.startY = e.pageY - this.barEl.offsetTop
       // 禁用鼠标选中文字
-      this.tableEl.style = `
+      document.documentElement.style = `
       -moz-user-select: none;
       -khtml-user-select: none;
       user-select: none;
@@ -172,7 +161,7 @@ export default {
     noUp() {
       this.isDown = false
       // 启用鼠标选中文字
-      this.tableEl.style = `
+      document.documentElement.style = `
       -moz-user-select: select;
       -khtml-user-select: select;
       user-select: select;
@@ -184,18 +173,22 @@ export default {
         // 获取滚动条要移动的位置
         let y =
           e.pageY - this.barEl.offsetTop - this.startY + this.barEl.offsetTop
+        console.log(y)
+        console.log(this.barMax)
         if (y > this.barMax) {
           y = this.barMax
         } else if (y < 0) {
           y = 0
         }
+        console.log(y)
+
         this.barEl.style.top = `${y}px`
         this.contentEl.style.top = `${-(y * this.cZoom)}px`
       }
     },
     // 鼠标滚动事件
     scroll(e, db) {
-      if (!this.isScroll) return
+      if (!this.isScroll || this.isDown) return
       // 阻止浏览器滚动
       e && e.preventDefault()
       // 计算每次需要滚动的距离
@@ -241,6 +234,26 @@ export default {
       this.dbTimer = setInterval(() => {
         this.scroll(null, true)
       }, 20)
+    },
+    judge() {
+      // 判断是否需要滚动条 以及动态修改滚动条高度
+      if (this.contentEl.offsetHeight <= this.tableEl.offsetHeight) {
+        this.isScroll = false
+        this.$refs.scrollRef.style.display = 'none'
+      } else {
+        this.isScroll = true
+        this.$refs.scrollRef.style.display = 'block'
+        let h = (this.tableEl.offsetHeight / this.contentEl.offsetHeight) * 300
+        h = h < 20 ? 20 : h
+        this.barEl.style.height = h + 'px'
+      }
+      // 滚动条最大移动距离
+      this.barMax = this.scrollEL.offsetHeight - this.barEl.offsetHeight
+      // 内容最大移动距离
+      this.cMax = this.contentEl.offsetHeight - this.tableEl.offsetHeight
+      // 滚动条与内容区域的缩放比例
+      this.cZoom =
+        this.cMax / (this.scrollEL.offsetHeight - this.barEl.offsetHeight)
     }
   },
   directives: {
@@ -266,6 +279,8 @@ export default {
     isShow: {
       handler(val) {
         if (parseInt(this.scrollShowMode) === 2) return
+        if (this.isDown) return
+        console.log(1)
         if (val) {
           let num = 0
           clearInterval(this.hideTimer)
@@ -278,11 +293,18 @@ export default {
           let num = 100
           clearInterval(this.showTimer)
           this.hideTimer = setInterval(() => {
-            if (!this.isDown) num -= 2
+            num -= 2
             if (num <= 0) clearInterval(this.hideTimer)
             this.barEl.style.opacity = num / 100
           }, 0)
         }
+      }
+    },
+    data: {
+      deep: true,
+      handler() {
+        // 判断是否需要滚动条 以及动态修改滚动条高度
+        this.judge()
       }
     }
   }

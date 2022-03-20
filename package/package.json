@@ -1,6 +1,6 @@
 {
   "name": "vue-simple-scroll-plugin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "一款简洁的vue滚动插件，快速，高效。支持滚动条和内容自定义。",
   "main": "index.js",
   "scripts": {
