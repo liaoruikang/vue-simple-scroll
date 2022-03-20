@@ -2,7 +2,7 @@
   <div
     class="simple__container"
     :style="{
-      height: height + 'px',
+      height,
       boxShadow: hideShadow
         ? 'none'
         : 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
@@ -24,7 +24,7 @@
     <div
       class="simple__scroll"
       ref="scrollRef"
-      :style="{ width: scrollWidth + 'px' }"
+      :style="{ width: scrollWidth }"
       v-show="scrollShowMode == 3 ? false : true"
     >
       <div
@@ -46,8 +46,8 @@ export default {
   props: {
     // 滚动条区域高度
     height: {
-      type: [String, Number],
-      default: 360
+      type: String,
+      default: '360px'
     },
     // 双击返回顶部
     doubleClick: {
@@ -70,8 +70,8 @@ export default {
     },
     // 滚动条宽度
     scrollWidth: {
-      type: [String, Number],
-      default: 5
+      type: String,
+      default: '5px'
     },
     // 滚动条显示方式
     scrollShowMode: {
@@ -121,7 +121,8 @@ export default {
       // 显示隐藏滚动条
       isShow: true,
       showTimer: null,
-      hideTimer: null
+      hideTimer: null,
+      isScroll: true
     }
   },
   created() {
@@ -137,6 +138,7 @@ export default {
     this.barEl = this.$refs.barRef
     // 判断是否需要滚动条 以及动态修改滚动条高度
     if (this.contentEl.offsetHeight <= this.tableEl.offsetHeight) {
+      this.isScroll = false
       this.$refs.scrollRef.style.display = 'none'
     } else {
       let h = (this.tableEl.offsetHeight / this.contentEl.offsetHeight) * 300
@@ -193,6 +195,7 @@ export default {
     },
     // 鼠标滚动事件
     scroll(e, db) {
+      if (!this.isScroll) return
       // 阻止浏览器滚动
       e && e.preventDefault()
       // 计算每次需要滚动的距离

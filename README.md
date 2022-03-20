@@ -52,10 +52,10 @@ import {SimpleScroll} from 'vue-simple-scroll-plugin'
 
 | 参数           | 说明                                        | 类型          | 可选值     | 默认值 |
 | :------------- | ------------------------------------------- | ------------- | ---------- | ------ |
-| height         | 整体高度                                    | String/Number | ——         | 360    |
+| height         | 整体高度                                    | String        | ——         | 360px  |
 | doubleClick    | 双击滚动条是否返回顶部                      | Boolean       | false/true | false  |
 | dbSpeed        | 返回顶部速度                                | String/Number | 快 3—10 慢 | 5      |
-| scrollWidth    | 滚动条宽度                                  | String/Number | ——         | 5      |
+| scrollWidth    | 滚动条宽度                                  | String        | ——         | 5px    |
 | scrollShowMode | 滚动条显示方式 1:淡出淡入 2:一直显示 3:隐藏 | String/Number | 1/2/3      | 1      |
 | scrollSpeed    | 内容滚动速度                                | String/Number | 慢 1—10 快 | 5      |
 
