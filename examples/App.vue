@@ -8,10 +8,8 @@
     ></simple-scroll>
   </div>
 </template>
-
 <script>
 import { simpleScroll } from 'vue-simple-scroll-plugin'
-
 export default {
   name: 'App',
   components: {
@@ -19,7 +17,6 @@ export default {
   }
 }
 </script>
-
 <style>
 #app {
   width: 600px;
