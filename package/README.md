@@ -1,4 +1,4 @@
-# vue-simple-scroll ![](https://img.shields.io/badge/version-1.0.5-blue.svg)
+# vue-simple-scroll ![](https://img.shields.io/badge/version-1.0.6-blue.svg)
 
 一款简洁的 vue 滚动插件，快速，高效。支持滚动条和内容自定义。
 
@@ -37,8 +37,8 @@ Vue.use(simpleScroll)
 import {SimpleScroll} from 'vue-simple-scroll-plugin'
 ```
 
+## Take a simple example
 ```
-// Take a simple example
 <simple-scroll doubleClick scrollWidth="3">
 	<ul>
 		<li v-for="item in 35" :key="item">{{item}}</li>
@@ -54,11 +54,10 @@ import {SimpleScroll} from 'vue-simple-scroll-plugin'
 | :------------- | ------------------------------------------- | ------------- | ------------------- | ------ |
 | height         | 整体高度                                    | String        | ——                  | 360px  |
 | doubleClick    | 双击滚动条是否返回顶部                      | Boolean       | false/true          | false  |
-| dbSpeed        | 返回顶部速度                                | String/Number | 快 3—10 慢          | 5      |
+| dbSpeed        | 返回顶部速度                                | String/Number | 快 3—20 慢          | 5      |
 | scrollWidth    | 滚动条宽度                                  | String        | ——                  | 5px    |
 | scrollShowMode | 滚动条显示方式 1:淡出淡入 2:一直显示 3:隐藏 | String/Number | 1/2/3               | 1      |
-| scrollSpeed    | 内容滚动速度                                | String/Number | 慢 1—10 快          | 5      |
-| data           | 内容区域的数据 防止动态更新错误             | ——            | Number/Object/Array | 必填项 |
+| scrollSpeed    | 内容滚动速度                                | String/Number | 慢 1—20 快          | 5      |
 
 ### Slot
 
