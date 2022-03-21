@@ -12,7 +12,12 @@
   >
     <!-- 内容 -->
     <div class="simple__table" ref="tableRef" v-roll>
-      <div class="simple__content" style="top: 0; left: 0" ref="contentRef">
+      <div
+        class="simple__content"
+        v-observe="openMonitor"
+        style="top: 0; left: 0"
+        ref="contentRef"
+      >
         <slot>
           <li class="simple__li" v-for="item in 15" :key="item">
             {{ item }}
@@ -59,7 +64,7 @@ export default {
       validator(val) {
         if (
           typeof val === 'number' ||
-          (typeof val === 'string' && val <= 10 && val >= 3)
+          (typeof val === 'string' && val <= 20 && val >= 3)
         ) {
           return true
         } else {
@@ -86,7 +91,7 @@ export default {
       validator(val) {
         if (
           typeof val === 'number' ||
-          (typeof val === 'string' && val <= 10 && val >= 1)
+          (typeof val === 'string' && val <= 20 && val >= 1)
         ) {
           return true
         } else {
@@ -100,9 +105,10 @@ export default {
       type: Boolean,
       default: false
     },
-    // 内容区域数据
-    data: {
-      required: true
+    // 开启动态监听内容变化
+    openMonitor: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -173,8 +179,6 @@ export default {
         // 获取滚动条要移动的位置
         let y =
           e.pageY - this.barEl.offsetTop - this.startY + this.barEl.offsetTop
-        console.log(y)
-        console.log(this.barMax)
         if (y > this.barMax) {
           y = this.barMax
         } else if (y < 0) {
@@ -273,6 +277,20 @@ export default {
           el.addEventListener('mousewheel', vnode.context.scroll)
         }
       }
+    },
+    // 监听内容DOM高度变化
+    observe: {
+      inserted(el, binding, { context }) {
+        if (!binding.value) return
+        const observer = new MutationObserver(() => {
+          context.judge()
+        })
+        observer.observe(el, {
+          childList: true,
+          attributes: true,
+          subtree: true
+        })
+      }
     }
   },
   watch: {
@@ -280,7 +298,6 @@ export default {
       handler(val) {
         if (parseInt(this.scrollShowMode) === 2) return
         if (this.isDown) return
-        console.log(1)
         if (val) {
           let num = 0
           clearInterval(this.hideTimer)

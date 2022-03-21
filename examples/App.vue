@@ -6,6 +6,7 @@
       scrollSpeed="10"
       dbSpeed="10"
       :data="list"
+      openMonitor
     >
       <ul @click="list++">
         <li v-for="item in list" :key="item">{{ item }}</li>
